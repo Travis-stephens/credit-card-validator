@@ -1,0 +1,32 @@
+body {
+  background-color: #ededec;
+}
+
+.App {
+  padding: 20px;
+}
+
+.ccvinput {
+  height: 45px;
+  width: 400px;
+  border: solid 2px transparent;
+  border-radius: 10px;
+  background-image: linear-gradient(white, white), radial-gradient(circle at top left, rgba(255, 62, 248, 1),rgba(1, 255, 255,1));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  padding: 7px;
+  font-size: 17px;
+  padding-left: 20px;
+  -webkit-box-shadow: 5px 15px 40px 0px rgba(0,0,0,0.11), 5px 5px 15px 0 rgba(0,0,0,0.08);
+  -moz-box-shadow: 5px 15px 40px 0px rgba(0,0,0,0.11), 5px 5px 15px 0 rgba(0,0,0,0.08);
+  box-shadow: 5px 15px 40px 0px rgba(0,0,0,0.11), 5px 5px 15px 0 rgba(0,0,0,0.08);
+}
+
+.ccvinput:focus {
+  outline: -webkit-focus-ring-color auto 0px !important;
+}
+
+.ccvinput::placeholder {
+  color: #e2e2e2;
+  opacity: 1;
+}
