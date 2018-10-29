@@ -1,12 +1,39 @@
 body {
   background-color: #ededec;
+  font-family: Helvetica;
+}
+
+h1 {
+  color: #444;
 }
 
 .App {
-  padding: 20px;
+  text-align: center;
 }
 
-.ccvinput {
+
+.inputInvalid {
+  background-image: linear-gradient(white, white), radial-gradient(circle at top left, rgba(255, 0, 0, 1),rgba(255, 0, 0,1)) !important;
+}
+
+.ccvLogo {
+  position: absolute;
+}
+
+.brand {
+  width: 40px;
+  margin-left: 365px;
+  margin-top: 10px;
+}
+
+.clear {
+  width: 20px;
+  margin-left: 385px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.ccvInput {
   height: 45px;
   width: 400px;
   border: solid 2px transparent;
@@ -22,11 +49,17 @@ body {
   box-shadow: 5px 15px 40px 0px rgba(0,0,0,0.11), 5px 5px 15px 0 rgba(0,0,0,0.08);
 }
 
-.ccvinput:focus {
+.ccvInput:focus {
   outline: -webkit-focus-ring-color auto 0px !important;
 }
 
-.ccvinput::placeholder {
+.ccvInput::placeholder {
   color: #e2e2e2;
   opacity: 1;
+}
+
+.errorMessage {
+  color: #ff3e3e;
+  margin-right: 280px;
+  font-size: 13px;
 }

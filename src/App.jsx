@@ -4,13 +4,13 @@ import CreditCardValidator from './components/CreditCardValidator/Container';
 
 export default class App extends Component {
   state = {
-    bbb: '',
+    title: 'Credit Card Validator',
   };
 
   render() {
     return (
       <div className="App">
-        {/* <h1>Welcome to {this.state.name}</h1> */}
+        <h1>{this.state.title}</h1>
         <CreditCardValidator a={this.state.bbb} />
       </div>
     );
