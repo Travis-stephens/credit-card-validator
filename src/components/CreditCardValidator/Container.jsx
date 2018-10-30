@@ -13,33 +13,33 @@ const TYPE_UNKNOWN = 4;
 const allowedCards = [
   {
     type: TYPE_AMEX,
-    begins_with: ['34', '37'],
+    beginsWith: ['34', '37'],
     lengths: [15],
-    file_name: 'american-express-logo.svg',
+    fileName: 'american-express-logo.svg',
   },
   {
     type: TYPE_DISCOVER,
-    begins_with: ['6011'],
+    beginsWith: ['6011'],
     lengths: [16],
-    file_name: 'discover-paying-card.svg',
+    fileName: 'discover-paying-card.svg',
   },
   {
     type: TYPE_MASTERCARD,
-    begins_with: ['51', '52', '53', '54', '55'],
+    beginsWith: ['51', '52', '53', '54', '55'],
     lengths: [16],
-    file_name: 'mastercard.svg',
+    fileName: 'mastercard.svg',
   },
   {
     type: TYPE_VISA,
-    begins_with: ['4'],
+    beginsWith: ['4'],
     lengths: [13, 16],
-    file_name: 'visa-pay-logo.svg',
+    fileName: 'visa-pay-logo.svg',
   },
   {
     type: TYPE_UNKNOWN,
-    begins_with: [],
+    beginsWith: [],
     lengths: [],
-    file_name: '',
+    fileName: '',
   },
 ];
 
@@ -75,13 +75,13 @@ const checkCardValidity = (number) => {
 };
 
 // Function that returns the card type
-// Defaults to unknown if does not match any begins_with in 'allowedCards'
+// Defaults to unknown if does not match any beginsWith in 'allowedCards'
 const getCardType = (number) => {
   for (let i = 0; i < allowedCards.length; i += 1) {
     const cardDetails = allowedCards[i];
-    for (let j = 0; j < cardDetails.begins_with.length; j += 1) {
-      const bwLength = cardDetails.begins_with[j].length;
-      if (number.substring(0, bwLength) === cardDetails.begins_with[j]) {
+    for (let j = 0; j < cardDetails.beginsWith.length; j += 1) {
+      const bwLength = cardDetails.beginsWith[j].length;
+      if (number.substring(0, bwLength) === cardDetails.beginsWith[j]) {
         return cardDetails.type;
       }
     }
@@ -144,7 +144,7 @@ export default class CreditCardValidator extends Component {
       <div>
         <Logo
           showClear={this.showClearButton()}
-          imgSrc={allowedCards[this.state.cardType].file_name}
+          imgSrc={allowedCards[this.state.cardType].fileName}
           fnClearNumber={() => this.clearNumber()}
         />
         <input
