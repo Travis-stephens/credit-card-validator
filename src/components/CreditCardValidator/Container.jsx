@@ -1,5 +1,7 @@
 // Imports
 import { Component } from 'react';
+import Logo from './Logo';
+import './Styles.css';
 
 const TYPE_AMEX = 0;
 const TYPE_DISCOVER = 1;
@@ -7,33 +9,37 @@ const TYPE_MASTERCARD = 2;
 const TYPE_VISA = 3;
 const TYPE_UNKNOWN = 4;
 
+// Allowed Card Types, easy to configure and add/remove from
 const allowedCards = [
   {
     type: TYPE_AMEX,
     begins_with: ['34', '37'],
-    length: [15],
+    lengths: [15],
     file_name: 'american-express-logo.svg',
   },
   {
     type: TYPE_DISCOVER,
     begins_with: ['6011'],
-    length: [16],
+    lengths: [16],
     file_name: 'discover-paying-card.svg',
-    width: '60px',
   },
   {
     type: TYPE_MASTERCARD,
     begins_with: ['51', '52', '53', '54', '55'],
-    length: [16],
+    lengths: [16],
     file_name: 'mastercard.svg',
-    width: '60px',
   },
   {
     type: TYPE_VISA,
     begins_with: ['4'],
-    length: [13, 16],
+    lengths: [13, 16],
     file_name: 'visa-pay-logo.svg',
-    width: '60px',
+  },
+  {
+    type: TYPE_UNKNOWN,
+    begins_with: [],
+    lengths: [],
+    file_name: '',
   },
 ];
 
@@ -47,7 +53,6 @@ const formatCardNumber = (value) => {
 };
 
 // Function that ensures Card Number is valid using the provided description of the Luhn algorithm
-// *Assumes the number has no spaces
 const checkCardValidity = (number) => {
   const numberArray = number.split('').reverse();
   let runningTotal = 0;
@@ -69,6 +74,8 @@ const checkCardValidity = (number) => {
   return runningTotal % 10 === 0;
 };
 
+// Function that returns the card type
+// Defaults to unknown if does not match any begins_with in 'allowedCards'
 const getCardType = (number) => {
   for (let i = 0; i < allowedCards.length; i += 1) {
     const cardDetails = allowedCards[i];
@@ -82,6 +89,9 @@ const getCardType = (number) => {
   return TYPE_UNKNOWN;
 };
 
+// Function that determines if the number is correct length for the specified card type
+const isCorrectLength = (number, type) => allowedCards[type].lengths.includes(number.length);
+
 // React Component
 export default class CreditCardValidator extends Component {
   state = {
@@ -90,18 +100,24 @@ export default class CreditCardValidator extends Component {
     cardType: TYPE_UNKNOWN,
   };
 
-
   setCardNumber(value) {
-    // Remove all formatting spaces from 'string'
+    // Remove all formatting spaces from value
     const trimmedValue = value.replace(/\s/g, '');
 
-    // Ensure that trimmedValue is either a Number or blank
+    // Ensure that trimmedValue is a Number
     if (!Number(trimmedValue) && value.length > 0) {
       return;
     }
 
+    // Ensures value isn't blank
+    if (trimmedValue.length === 0) {
+      this.clearNumber();
+      return;
+    }
+
     const type = getCardType(trimmedValue);
-    const valid = checkCardValidity(trimmedValue) && type !== TYPE_UNKNOWN;
+    const correctLength = isCorrectLength(trimmedValue, type);
+    const valid = checkCardValidity(trimmedValue) && type !== TYPE_UNKNOWN && correctLength;
 
     this.setState({
       cardNumber: value,
@@ -118,26 +134,28 @@ export default class CreditCardValidator extends Component {
     });
   }
 
-  showClear() {
+  showClearButton() {
     return this.state.cardType === TYPE_UNKNOWN;
   }
 
   render() {
+    const errorMsg = this.state.isValid ? '' : 'Invalid card number';
     return (
       <div>
-        {
-          this.showClear() ?
-            <img className="ccvLogo clear" src="./images/clear.svg" alt="" onClick={()=>this.clearNumber()}/> :  //eslint-disable-line
-            <img className="ccvLogo brand" src={`./images/${allowedCards[this.state.cardType].file_name}`} alt="" />
-        }
+        <Logo
+          showClear={this.showClearButton()}
+          imgSrc={allowedCards[this.state.cardType].file_name}
+          fnClearNumber={() => this.clearNumber()}
+        />
         <input
           type="text"
           className={`ccvInput ${this.state.isValid ? '' : 'inputInvalid'}`}
+          maxLength="20"
           placeholder="0000 0000 0000 0000"
           value={formatCardNumber(this.state.cardNumber)}
           onChange={(e) => { this.setCardNumber(e.target.value); }}
         />
-        <p className="errorMessage">{!this.state.isValid ? 'Invalid card number' : ''}</p>
+        <p className="errorMessage">{errorMsg}</p>
       </div>
     );
   }
